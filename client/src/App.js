@@ -1,6 +1,6 @@
 import './App.css';
 
-import fileName from './11_ethics.pdf';
+import fileName from './07_01_2021_G1P-GS.pdf';
 import PdfViewer from './pdf-viewer/pdf-viewer';
 
 function App() {

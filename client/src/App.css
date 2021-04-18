@@ -1,3 +1,7 @@
+ul li {
+  list-style: none;
+}
+
 .App {
   text-align: center;
 }
@@ -37,14 +41,37 @@
   }
 }
 
-
-.react-pdf__Outline ul {
-  display: flex;
-  max-width: 100vw;
+.react-pdf__Page {  
+  border: 1px solid green;
+  max-height: 98vh;
 }
 
 .react-pdf__Outline ul li {
   max-width: 2rem;
-  list-style: none;
-  
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 100vh;
+  border: 1px solid blue;
+}
+
+.document-article {
+  min-width: 50vw;  
+  border: 1px solid gold;
+}
+
+  .document-article canvas {
+    min-width: 50vw;
+    max-height: 98vh;
+  }
+
+.react-pdf__Page__canvas {
+  display: none;
+}
+
+.topics li {
+  padding: 0.5rem;
 }
