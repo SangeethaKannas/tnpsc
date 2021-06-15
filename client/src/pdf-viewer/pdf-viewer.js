@@ -25,10 +25,10 @@ function highlightPattern(text = "", pattern = "") {
 }
 
 const PdfViewer = ({ file }) => {
-  const [numPages, setNumPages] = useState(null);
+  
   const [pageNumber, setPageNumber] = useState(3);
-  const [pagesList, setPagesList] = useState([]);
-  const [searchText, setSearchText] = useState("");
+  const [pagesList, setPagesList] = useState([0, 1]);
+  // const [searchText, setSearchText] = useState("");
 
   //   const textRenderer = useMemo((textItem) => {
   //       console.log(textItem);
@@ -47,41 +47,70 @@ const PdfViewer = ({ file }) => {
     let mainCanvas = null;
     let secondaryDocument = null;
 
-    mainCanvas = document.getElementsByClassName(
-      "react-pdf__Page__canvas"
-    )[0];
-    var imageContentRaw = mainCanvas
-        .getContext("2d")
-      .getImageData(x, y, desiredWidth, desiredHeight);
+    // mainCanvas = document.getElementsByClassName(
+    //   "react-pdf__Page__canvas"
+    // )[0];
+    // var imageContentRaw = mainCanvas
+    //     .getContext("2d")
+    //   .getImageData(x, y, desiredWidth, desiredHeight);
 
-    secondaryDocument = document.getElementById("secondary-document");
-    secondaryDocument.innerHTML = '<canvas id="dtemp"></canvas>';
+    // secondaryDocument = document.getElementById("secondary-document");
+    // secondaryDocument.innerHTML = '<canvas id="dtemp"></canvas>';
 
-    let secondaryCanvas = document.getElementById("dtemp");
-    let secondaryCanvas_Context = secondaryCanvas.getContext("2d");
-    secondaryCanvas_Context.canvas.width = desiredWidth;
-    secondaryCanvas_Context.canvas.height = desiredHeight;
-    secondaryCanvas.getContext("2d").putImageData(imageContentRaw, 0, 0);
+    // let secondaryCanvas = document.getElementById("dtemp");
+    // let secondaryCanvas_Context = secondaryCanvas.getContext("2d");
+    // secondaryCanvas_Context.canvas.width = desiredWidth;
+    // secondaryCanvas_Context.canvas.height = desiredHeight;
+    // secondaryCanvas.getContext("2d").putImageData(imageContentRaw, 0, 0);
   }
 
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-    setPagesList([0, numPages - 1]);
+  function onDocumentLoadSuccess({ numPages }) {    
+    setPagesList(extractPages(["1-" + (numPages - 1)]));
     setTimeout(modifyCanvas, 1000);
   }
 
-  function onRenderSuccess () {
+  function onRenderSuccess() {
     let mainCanvas = document.getElementsByClassName(
       "react-pdf__Page__canvas"
     )[0];
-    if(mainCanvas.style.display === 'block') {
-      mainCanvas.style.display = 'none';
+    if (mainCanvas.style.display === "block") {
+      // mainCanvas.style.display = 'none';
     }
+    setTimeout(modifyCanvas, 500);
   }
 
-  function changePage(offset) {
-    setPageNumber((prevPageNumber) => prevPageNumber + offset);
-    modifyCanvas();
+  const range = (start, stop, step) =>
+    Array.from(
+      { length: (stop - start) / step + 1 },
+      (_, i) => start + i * step
+    );
+
+  function extractPages(pagesList) {
+    const pageSequence = [];
+
+    for (let page in pagesList) {
+      if (pagesList[page].indexOf("-") > -1) {
+        pageSequence.push(
+          ...range(
+            Number(pagesList[page].split("-")[0]),
+            Number(pagesList[page].split("-")[1]),
+            1
+          )
+        );
+      } else {
+        pageSequence.push(pagesList[page]);
+      }
+    }
+    console.log(pageSequence);
+    return pageSequence;
+  }
+
+  function changePage(direction) {
+    //TODO: Make sure the pages are from pagesList
+    const nextPage = pageNumber + direction * 1;
+    if (nextPage < pagesList[pagesList.length - 1] || nextPage > 1) {
+      setPageNumber(nextPage);
+    }
   }
 
   function previousPage() {
@@ -96,49 +125,82 @@ const PdfViewer = ({ file }) => {
     setPageNumber(itemPageNumber);
   }
 
+  //const topics = ['Maths', 'Science', 'History', 'Geography', 'தமிழ் வரலாறு', 'Economics', 'Polity'];
+
   const topics = [
     {
-      name:'Maths',
-      tags: ['a','b','c'],
-      pages: '89-100',
-      questionnumbers: []
-    }
+      name: "Maths",
+      tags: ["a", "b", "c"],
+      pages: ["89-100"],
+      questionnumbers: [],
+    },
+    {
+      name: "Polity",
+      tags: ["a", "b", "c"],
+      pages: ["81-82"],
+      questionnumbers: [],
+    },
+    {
+      name: "Physics",
+      tags: ["a", "b", "c"],
+      pages: ["89-100"],
+      questionnumbers: [],
+    },
   ];
 
-  function selectTopic(topic) {
-    //setNumPages(topic.pages)
-  }
+  const selectTopic = (event) => {
+    setPagesList(extractPages(event.target.value.split(",")));
+
+    let currentPageList = event.target.value.split(",");
+    let currentPageNumber = 1;
+    if (currentPageList[0].indexOf("-") > -1) {
+      currentPageNumber = Number(currentPageList[0].split("-")[0]);
+    } else {
+      currentPageNumber = Number(currentPageList[0]);
+    }
+    setPageNumber(currentPageNumber);
+  };
 
   return (
     <>
       <section className="container">
-        <button type="button" disabled={pageNumber <= 1} onClick={previousPage}>
+        <button
+          type="button"
+          disabled={pageNumber <= pagesList[0]}
+          onClick={previousPage}
+        >
           Previous
         </button>
         <article>
           <ul className="topics">
-            {
-              topics.map(
-                topic => 
-                  <li key={topic.name} onClick={selectTopic(topic)}>
-                    {topic.name}
-                  </li>
-              )
-            }
+            {topics.map((topic) => (
+              <li key={topic.name}>
+                <button
+                  onClick={selectTopic}
+                  value={topic.pages}
+                  className="topic"
+                >
+                  {topic.name}
+                </button>
+              </li>
+            ))}
           </ul>
         </article>
         <div>
           <article className="document-article">
             <Document file={file} onLoadSuccess={onDocumentLoadSuccess}>
               <Outline onItemClick={onItemClick} />
-              <Page pageNumber={pageNumber || 2} onRenderSuccess={onRenderSuccess} />
+              <Page
+                pageNumber={pageNumber || 2}
+                onRenderSuccess={onRenderSuccess}
+              />
             </Document>
           </article>
           <article id="secondary-document"></article>
         </div>
         <button
           type="button"
-          disabled={pageNumber >= numPages}
+          disabled={pageNumber >= pagesList[pagesList.length - 1]}
           onClick={nextPage}
         >
           Next

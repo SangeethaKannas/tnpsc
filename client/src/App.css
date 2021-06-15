@@ -69,9 +69,10 @@ ul li {
   }
 
 .react-pdf__Page__canvas {
-  display: none;
+ 
 }
 
-.topics li {
+.topic {
   padding: 0.5rem;
+  cursor: pointer;  
 }
