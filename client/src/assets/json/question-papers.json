@@ -1,0 +1,100 @@
+[
+  {
+    "name": "AHGS-2021",
+    "fileName": "AHGS-2021.pdf",
+    "pages": [
+      {
+        "pageNumber": 1,
+        "tags": ["Maths"],
+        "questions": "1-2"
+      },
+      {
+        "pageNumber": 2,
+        "tags": ["Maths"],
+        "questions": "3-4"
+      },
+      {
+        "pageNumber": 3,
+        "tags": ["Maths"],
+        "questions": "5-6"
+      },
+      {
+        "pageNumber": 4,
+        "tags": ["Maths"],
+        "questions": "7-8"
+      },
+      {
+        "pageNumber": 5,
+        "tags": ["Maths"],
+        "questions": "9-10"
+      },
+      {
+        "pageNumber": 6,
+        "tags": ["Maths"],
+        "questions": "11"
+      },
+      {
+        "pageNumber": 7,
+        "tags": ["Maths"],
+        "questions": "12"
+      },
+      {
+        "pageNumber": 8,
+        "tags": ["TN Illakiyam"],
+        "questions": "13-14"
+      },
+      {
+        "pageNumber": 9,
+        "tags": ["Polity"],
+        "questions": "15-16"
+      },
+      {
+        "pageNumber": 10,
+        "tags": ["Economics", "TN History"],
+        "questions": "11"
+      },
+      {
+        "pageNumber": 11,
+        "tags": ["Maths"],
+        "questions": "11"
+      },
+      {
+        "pageNumber": 7,
+        "tags": ["Maths"],
+        "questions": "11"
+      }
+
+    ]
+  },
+  {
+    "name": "2021_G1P-GS",
+    "fileName": "07_01_2021_G1P-GS.pdf",
+    "pages": [
+      {
+        "pageNumber": 89,
+        "tags": ["Maths"],
+        "questions": "161-163"
+      },
+      {
+        "pageNumber": 90,
+        "tags": ["Maths"],
+        "questions": "164-165"
+      },
+      {
+        "pageNumber": 91,
+        "tags": ["Maths"],
+        "questions": "166-168"
+      },
+      {
+        "pageNumber": 92,
+        "tags": ["Maths"],
+        "questions": "169-170"
+      },
+      {
+        "pageNumber": 93,
+        "tags": ["Maths"],
+        "questions": "171-172"
+      }
+    ]
+  }
+]

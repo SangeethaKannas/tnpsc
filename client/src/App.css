@@ -68,11 +68,24 @@ ul li {
     max-height: 98vh;
   }
 
-.react-pdf__Page__canvas {
- 
+.react-pdf__Page__canvas { 
+}
+
+.topics {
+  display: flex;
 }
 
 .topic {
   padding: 0.5rem;
+  cursor: pointer;
+  width: 6rem;
+  margin: 0.5rem;
+}
+
+.nav-button {
+  padding: 0.5rem;
   cursor: pointer;  
+  width: 6rem;
+  margin: 0.5rem;
+  padding: 0.5rem 0;
 }

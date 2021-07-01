@@ -1,12 +1,40 @@
-import './App.css';
+import "./App.css";
 
-import fileName from './07_01_2021_G1P-GS.pdf';
-import PdfViewer from './pdf-viewer/pdf-viewer';
+import Questions from "./pdf-utils/questions";
+import questionPapers from "./assets/json/question-papers.json";
 
 function App() {
+  const topics = [
+    {
+      name: "Maths",
+      tags: ["Algebra", "HCF-LCM", "Sequences", "Maths"]
+    },
+    {
+      name: "Polity",
+      tags: ["Parts", "Schedules", "Amendments"]
+      
+    },
+    {
+      name: "Economics",
+      tags: ["Demography", "Census"]
+    },
+    {
+      name: "TN History",
+      tags: ["Dravidian Politics"]
+    },
+    {
+      name: "TN Illakiyam",
+      tags: ["Thirukural"]
+    },
+    {
+      name: "Physics",
+      tags: ["Light"]
+    }
+  ];
+
   return (
     <div className="App">
-      <PdfViewer file={fileName} />
+      <Questions  topics={topics} questionPapers={questionPapers}/>
     </div>
   );
 }
