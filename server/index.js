@@ -1,42 +1,54 @@
+"use strict";
 const express = require("express");
-var app = express();
+const app = express();
 
-const fs = require('fs');
-const pdf = require('pdf-parse');
- 
-let dataBuffer = fs.readFileSync('./temp.pdf');
+const fs = require("fs");
+const pdf = require("pdf-parse");
+const log = console.log;
 
-const RULES = [
-   {
-     "IGNORE": [""]
-   }
-]
+const { LinkedNode, LinkedList } = require("./LinkedList");
+const RegistrationDocument = require("./models/RegistrationDocument");
+const { LINES_TO_IGNORE, ENDING_LINE, RULES } = require("./const");
+
+let dataBuffer = fs.readFileSync("./temp.pdf");
+
+let parseLine = (line, registrationDoc, array = [], index = 0) =>
+  RULES.filter((rule) =>
+    rule.values.some((value) => line.includes(value))
+  ).reduce(
+    (acc, rule) => rule.handler.call(this, line, acc, array, index),
+    registrationDoc
+  );
 
 let parseData = (data) => {
-
-  RULES.forEach(())
+  let registrationDoc = new RegistrationDocument();
+  return data
+    .split("\n")
+    .reduce(
+      (registrationDoc, line, array, index) =>
+        parseLine(line, registrationDoc, array, index),
+      registrationDoc
+    );
 };
- 
-pdf(dataBuffer).then(function(data) {
- 
-    // number of pages
-    //console.log(data.numpages);
-    // number of rendered pages
-    //console.log(data.numrender);
-    // PDF info
-    // console.log(data.info);
-    // PDF metadata
-    // console.log(data.metadata); 
-    // PDF.js version
-    // check https://mozilla.github.io/pdf.js/getting_started/
-    // console.log(data.version);
-    // PDF text    
-    parseData(data.text);
-        
-});
 
-app.get("/", function (request, response) {
-  response.send("Hello World!");
+app.get("/", (request, response) => {
+  pdf(dataBuffer)
+    .then(function (data) {
+      const filteredData = data.text
+        .split("\n")
+        .map((line) => line.trim())
+        .filter((line) => line.length > 1)
+        .filter((line) => LINES_TO_IGNORE.includes(line) == false);
+
+      //filteredData.length = filteredData.indexOf(ENDING_LINE);
+      filteredData.length = 12;
+      //log(parseData(filteredData.join("\n")));
+      response.status(200).send(parseData(filteredData.join("\n")));
+    })
+    .catch((error) => {
+      console.log(error);
+      response.send(error.message);
+    });
 });
 
 app.listen(10000, function () {

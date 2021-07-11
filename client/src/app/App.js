@@ -1,7 +1,7 @@
 import "./App.css";
 
 import Questions from "./pdf-utils/questions";
-import questionPapers from "./assets/json/question-papers.json";
+import questionPapers from "../assets/json/question-papers.json";
 
 function App() {
   const topics = [
